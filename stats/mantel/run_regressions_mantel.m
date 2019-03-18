@@ -15,13 +15,17 @@ mode='mem'; % 'iq' or 'read' or 'mem' or 'phon'
 cons={'_1'}; % '_1' listening to speech, '_2' resting
 freq={'5.000000e-01-4Hz', '4-8Hz','8-12Hz','12-25Hz','25-45Hz', '55-90Hz'}; %frequency bands 
 regress_IQ_out = 1; % 0 = no, 1 = yes; regresses IQ out from brain data
+if regress_IQ_out==1
+    results_path = '/media/cbru/SMEDY/results/mantel_correlations/2019_03_IQ_regressed_out/';
+else
+    results_path = '/media/cbru/SMEDY/results/mantel_correlations/2019_03_simple_model/';
+end
 
 % isc results for each condition and frequency band, 1=speech, 2=rest
 % 1st row: 4-8Hz, 2nd row: 8-12Hz etc.
 
 disp('Calculating mantel test between brain data and behavioural model')
 corr_matrix_path = '/media/cbru/SMEDY/DATA/MEG_speech_rest_prepro/corr_matrices/';
-results_path = '/media/cbru/SMEDY/results/mantel_correlations/';
 
 % if(0) % 1 to load 20s time wind, 0 to load whole
 %     window='_20';
@@ -103,22 +107,22 @@ if regress_IQ_out==1
     mean_iq_vec = mean_iq(toptri);
 end
 
-% % pre-compute NPERMS fake models
-% fake_model_vec=zeros(946,NPERMS); % 946 comes from number of subject pairs
-% throwthedice=1;
-% counter=1;
-% while(throwthedice)
-%    temp=randperm(NS);
-%    fake_model=model(temp,temp);
-%    r_temp=corr(fake_model(toptri),model(toptri),'type','spearman');
-%    if(r_temp > 0.95)
-%        disp('throw the dice again')
-%    else
-%         fake_model_vec(:,counter)=fake_model(toptri);
-%         counter=counter+1;
-%    end
-%    if(counter>NPERMS) throwthedice=0; end
-% end
+% pre-compute NPERMS fake models
+fake_model_vec=zeros(946,NPERMS); % 946 comes from number of subject pairs
+throwthedice=1;
+counter=1;
+while(throwthedice)
+   temp=randperm(NS);
+   fake_model=model(temp,temp);
+   r_temp=corr(fake_model(toptri),model(toptri),'type','spearman');
+   if(r_temp > 0.95)
+       disp('throw the dice again')
+   else
+        fake_model_vec(:,counter)=fake_model(toptri);
+        counter=counter+1;
+   end
+   if(counter>NPERMS) throwthedice=0; end
+end
       
 % setting up output variables and stats parameters
 contrast_lh.tmin=1;
@@ -153,20 +157,12 @@ for f=1:length(freq); % MEG frequency band
     %disp(s)
     iscs_vec=all_data';%after loading
     if regress_IQ_out==1
-        % do regression here
-        % phon - IQ
-        [a b scores]=regress(iscs_vec(:,1),[mean_iq_vec ones(size(iscs_vec,1),1)]);
-        error('Stop')
-        scores=scores-min(scores)+min(iscs_vec);
-        phon_ort_iq=scores;
-        
-        mean_phon_ort_iq=zeros(length(phon));
-        for s1=1:length(phon)
-            for s2=s1:length(phon)
-                mean_phon_ort_iq(s1,s2)=mean([scores(s1,1) scores(s2,1)]);
-                mean_phon_ort_iq(s2,s1)=mean_phon_ort_iq(s1,s2);
-            end
+        % do regression here: ISCs - IQ
+        for n=1:length(iscs_vec)
+            [a(:,:,n), b(:,:,n), iscs_ort_iq(:,n)]=regress(iscs_vec(:,n),[mean_iq_vec ones(size(iscs_vec,1),1)]);
         end
+        iscs_ort_iq=iscs_ort_iq-min(iscs_ort_iq)+min(iscs_vec); %scaling???
+        iscs_vec = iscs_ort_iq;
     end
     NNODES = size(iscs_vec, 2);
     
