@@ -12,7 +12,7 @@ Setup of source space, forward and inverse operators in individual cortically-co
 
 ## Inter-subject correlation (ISC)
 
-Pair-wise correlation of MEG amplitude envelopes for different frequency bands, group averages. Code originally used in Suppanen, E., 2014. Inter-subject correlation of MEG data during movie viewing. Master’s thesis, Aalto University School of Electrical Engineering.
+Pair-wise correlation of MEG amplitude envelopes for different frequency bands, group averages. Code originally used in [Suppanen, E., 2014. Inter-subject correlation of MEG data during movie viewing. Master’s thesis, Aalto University School of Electrical Engineering.](http://urn.fi/URN:NBN:fi:aalto-201412303344)
 
 ## Statistics
 
