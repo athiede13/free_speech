@@ -2,6 +2,8 @@
 
 Code used for **Thiede et al. Atypical brain-to-brain synchronization during listening to continuous natural speech in dyslexia, submitted.** Most of the code makes use of the [MNE Python](https://github.com/mne-tools/mne-python) software package.
 
+DOI for the code: https://doi.org/10.5281/zenodo.3248697
+
 ## Preprocessing
 
 Removal of noisy channels, maxfilter and physiological artifacts from MEG data.
