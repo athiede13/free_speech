@@ -103,21 +103,43 @@ for f=1:length(frequencies)
             end
         end
         
-        disp(strcat('Saving corr_matrix_',frequencies{f},window,condition{s},'.mat'));
-        save(strcat('/media/cbru/SMEDY/DATA/MEG_speech_rest_prepro/corr_matrices/corr_matrix_',frequencies{f},window,condition{s},'.mat'),'all_data');
+%         disp(strcat('Saving corr_matrix_',frequencies{f},window,condition{s},'.mat'));
+%         save(strcat('/media/cbru/SMEDY/DATA/MEG_speech_rest_prepro/corr_matrices/corr_matrix_',frequencies{f},window,condition{s},'.mat'),'all_data');
         
     end
 end
 
-save('/media/cbru/SMEDY/DATA/MEG_speech_rest_prepro/corr_matrices/subjects.mat', 'subj_list');
+% save('/media/cbru/SMEDY/DATA/MEG_speech_rest_prepro/corr_matrices/subjects.mat', 'subj_list');
 
 %% Visualize correlation matrix in a random source point
-r=7665;
+
+%TO BE SET
+frequencies={'12-25Hz'};%{'5.000000e-01-4Hz','4-8Hz','8-12Hz','12-25Hz','25-45Hz','55-90Hz'};
+condition={'_10'}; % '_10' speech 1, '_11' speech 2
+window='_286'; % '_286' speech 1, '_327' speech 2
+load(char(strcat('/media/cbru/SMEDY/DATA/MEG_speech_rest_prepro/corr_matrices/corr_matrix_',frequencies{1},window,condition,'.mat')));
+r=2459;
+
+cutM=23;
 
 ids=find(tril(ones(length(subj_list)),-1));
 temp=zeros(length(subj_list));
 temp(ids)=all_data(r,:);
 temp=temp+temp'+eye(length(subj_list));
-imagesc(temp,[-.3 .3])
+imagesc(temp,[-.5 .5])
 colorbar
+hold on
+plot([0 size(temp,1)]+.5,[cutM cutM]+.5,'k', 'linewidth', 1);
+plot([cutM cutM]+.5,[0 size(temp,1)]+.5,'k', 'linewidth', 1);
 
+% find max correlation
+max(all_data(r,:))
+find(all_data(r,:)==min(all_data(r,:)))
+
+% 23 + 5 or 13 + 5 dys high ISC
+subj_list(5) %sme_011
+subj_list(23) %47
+subj_list(13) %24
+% 30 + 36 con low ISC
+subj_list(30) %12
+subj_list(36) %35
