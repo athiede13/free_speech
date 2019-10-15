@@ -7,7 +7,8 @@ Files in this folder:
 1. isc_models.mat - Output from make_models.m
 1. combine_corr_matrices_speech1_2.m - Make weighted average of speech correlation matrices for part 1 and 2.
 1. make_colorbar.m - Create colorbar for visualization of results.
-1. extract_MNI_coord.py - Extract maximum-value MNI coordinates from statistical maps (see subfolders).
+1. extract_MNI_coord.py - Extract maximum-value MNI coordinates of largest cluster from statistical maps (see subfolders).
+1. MNI_to_brain_area.R - Extract brain areas from MNI cooredinates according to AAL atlas.
 
 ## ISCs_sign_one_sample_perm - One-sample *t*-test for ISC significance in each group
 
@@ -16,6 +17,8 @@ Files in this subfolder:
 1. plot_stats_cluster_spatio_temporal_1samp.py - Permutation-based *t*-test for ISCs with cluster correction.
 1. summarize_clusters_stc_AT.py - Helper function modified from MNE to prepare clusters for visualization.
 1. plot_ISC_subplots_T_vals.py - Visualization on brain surface.
+1. plot_ISC_overlaps.py - Plot overlaps with the same T-cutoffs as in plot_ISC_subplots_T_vals.py
+1. plot_ISC_subplots_overlap.py - Visualization for each frequency band.
 
 ## contrast_cluster_perm - Group difference maps
 
@@ -43,3 +46,4 @@ Files in this subfolder:
 1. clusters_max_correlation.py - Find maximum correlation between ISC and reading score in cluster and plot
 scatter plot with regression line.
 1. plot_ISC_subplots_mantel.py - Visualization on brain surface.
+1. plot_subplots_2nd_largest_clu.py - Visualize second-largest clusters.
