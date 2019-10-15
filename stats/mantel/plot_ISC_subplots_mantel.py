@@ -25,9 +25,6 @@ filenames1 = (filepath + 'phon_clu_5.000000e-01-4Hz_613_1_lat-lh.png',
               filepath + 'phon_clu_12-25Hz_613_1_lat-lh.png',
               filepath + 'phon_clu_12-25Hz_613_1_lat-rh.png',
               filepath + 'max_cluster_corr_12-25Hz_phon_1.png',
-              filepath + 'phon_clu_25-45Hz_613_1_lat-lh.png',
-              filepath + 'phon_clu_25-45Hz_613_1_lat-rh.png',
-              filepath + 'max_cluster_corr_25-45Hz_phon_1.png',
               filepath + 'phon_clu_55-90Hz_613_1_lat-lh.png',
               filepath + 'phon_clu_55-90Hz_613_1_lat-rh.png',
               filepath + 'max_cluster_corr_55-90Hz_phon_1.png'
@@ -36,15 +33,9 @@ filenames1 = (filepath + 'phon_clu_5.000000e-01-4Hz_613_1_lat-lh.png',
 filenames2 = (filepath + 'read_clu_5.000000e-01-4Hz_613_1_lat-lh.png',
               filepath + 'read_clu_5.000000e-01-4Hz_613_1_lat-rh.png',
               filepath + 'max_cluster_corr_5.000000e-01-4Hz_read_1.png',
-              filepath + 'read_clu_4-8Hz_613_1_lat-lh.png',
-              filepath + 'read_clu_4-8Hz_613_1_lat-rh.png',
-              filepath + 'max_cluster_corr_4-8Hz_read_1.png',
               filepath + 'read_clu_8-12Hz_613_1_med-lh.png',
               filepath + 'read_clu_8-12Hz_613_1_med-rh.png',
               filepath + 'max_cluster_corr_8-12Hz_read_1.png',
-              filepath + 'read_clu_12-25Hz_613_1_lat-lh.png',
-              filepath + 'read_clu_12-25Hz_613_1_lat-rh.png',
-              filepath + 'max_cluster_corr_12-25Hz_read_1.png',
               filepath + 'read_clu_25-45Hz_613_1_lat-lh.png',
               filepath + 'read_clu_25-45Hz_613_1_lat-rh.png',
               filepath + 'max_cluster_corr_25-45Hz_read_1.png',
@@ -56,26 +47,19 @@ filenames2 = (filepath + 'read_clu_5.000000e-01-4Hz_613_1_lat-lh.png',
 filenames3 = (filepath + 'iq_clu_5.000000e-01-4Hz_613_1_lat-lh.png',
               filepath + 'iq_clu_5.000000e-01-4Hz_613_1_lat-rh.png',
               filepath + 'max_cluster_corr_5.000000e-01-4Hz_iq_1.png',
-              filepath + 'iq_clu_55-90Hz_613_1_lat-lh.png',
-              filepath + 'iq_clu_55-90Hz_613_1_lat-rh.png',
-              filepath + 'max_cluster_corr_55-90Hz_iq_1.png'
               )
 
-labels1 = ['\u03B4 ', '', '',
-           '\u03B8 ', '', '',
-           '\u03B1 ', '', '',
-           '\u03B2 ', '', '',
-           'low \u03B3 ', '', '',
-           'high \u03B3 ', '', ''
+labels1 = ['delta ', '', '',
+           'theta ', '', '',
+           'alpha ', '', '',
+           'beta ', '', '',
+           'high gamma ', '', ''
            ]
-labels2 = ['\u03B4 ', '', '',
-           '\u03B8 ', '', '',
-           '\u03B1 ', '', '',
-           '\u03B2 ', '', '',
-           'low \u03B3 ', '', '',
-           '\u03B4 ', '', '']
-labels3 = ['\u03B4 ', '', '',
-           'high \u03B3 ', '', '']
+labels2 = ['delta ', '', '',
+           'alpha ', '', '',
+           'low gamma ', '', '',
+           'delta','','']
+labels3 = ['delta ', '', '']
 # delta \u03B4
 # theta \u03B8
 # alpha \u03B1
@@ -85,7 +69,7 @@ labels3 = ['\u03B4 ', '', '',
 #plot subplots
 
 plt.rcParams['font.family'] = "serif"
-fig1 = plt.figure(figsize=(15, 30))
+fig1 = plt.figure(figsize=(15, 25))
 fig1.tight_layout()
 plt.subplots_adjust(wspace=0, hspace=0)
 i = 1
@@ -98,18 +82,18 @@ for file in filenames1:
     ax.text(1.01, 1.03, labels1[i-1], horizontalalignment='center',
             verticalalignment='center', transform=ax.transAxes, fontsize=17)
     if i == 2:
-        ax.text(0.5, 1.25, 'phonological processing', horizontalalignment='center',
+        ax.text(0.5, 1.2, 'phonological processing', horizontalalignment='center',
                 verticalalignment='center', transform=ax.transAxes, fontsize=25)
     i = i+1
 
 
-fig1.suptitle("Regressions of speech ISCs with", fontsize=25, y=0.94)
+fig1.suptitle("Regressions of speech ISCs with", fontsize=25, y=0.935)
 plt.show()
 fig1.savefig(filepath + 'summary_speech_correlations1.png', bbox_inches='tight', dpi=600)
 fig1.savefig(filepath + 'summary_speech_correlations1.pdf', bbox_inches='tight', dpi=600)
 fig1.clear()
 
-fig2 = plt.figure(figsize=(15, 30))
+fig2 = plt.figure(figsize=(15, 20))
 fig2.tight_layout()
 plt.subplots_adjust(wspace=0, hspace=0)
 i = 1
@@ -122,20 +106,20 @@ for file in filenames2:
     ax.text(1.01, 1.03, labels2[i-1], horizontalalignment='center',
             verticalalignment='center', transform=ax.transAxes, fontsize=17)
     if i == 2:
-        ax.text(0.5, 1.25, 'technical reading', horizontalalignment='center',
+        ax.text(0.5, 1.2, 'technical reading', horizontalalignment='center',
                 verticalalignment='center', transform=ax.transAxes, fontsize=25)
-    if i == 17:
-        ax.text(0.5, 1.05, 'working memory', horizontalalignment='center',
+    if i == 11:
+        ax.text(0.5, 1.08, 'working memory', horizontalalignment='center',
                 verticalalignment='center', transform=ax.transAxes, fontsize=25)
     i = i+1
 
-fig2.suptitle("Regressions of speech ISCs with", fontsize=25, y=0.94)
+fig2.suptitle("Regressions of speech ISCs with", fontsize=25, y=0.95)
 plt.show()
 fig2.savefig(filepath + 'summary_speech_correlations2.png', bbox_inches='tight', dpi=600)
 fig2.savefig(filepath + 'summary_speech_correlations2.pdf', bbox_inches='tight', dpi=600)
 fig2.clear()
 
-fig3 = plt.figure(figsize=(15, 10))
+fig3 = plt.figure(figsize=(15, 5))
 fig3.tight_layout()
 plt.subplots_adjust(wspace=0, hspace=0)
 i = 1
@@ -148,11 +132,11 @@ for file in filenames3:
     ax.text(1.01, 1.03, labels3[i-1], horizontalalignment='center',
             verticalalignment='center', transform=ax.transAxes, fontsize=17)
     if i == 2:
-        ax.text(0.5, 1.25, 'IQ', horizontalalignment='center',
+        ax.text(0.5, 1.18, 'IQ', horizontalalignment='center',
                 verticalalignment='center', transform=ax.transAxes, fontsize=25)
     i = i+1
 
-fig3.suptitle("Regressions of speech ISCs with", fontsize=25, y=1.06)
+fig3.suptitle("Regressions of speech ISCs with", fontsize=25, y=1.15)
 plt.show()
 fig3.savefig(filepath + 'summary_speech_correlations3.png', bbox_inches='tight', dpi=600)
 fig3.savefig(filepath + 'summary_speech_correlations3.pdf', bbox_inches='tight', dpi=600)
