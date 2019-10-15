@@ -16,7 +16,8 @@ subjects_dir = '/media/cbru/SMEDY/DATA/MRI_data/MRI_orig/'
 
 # to fill, needed if this script is not used directly after cluster_correction.py
 results_dir = '/media/cbru/SMEDY/results/dys_con_contrast/2019_05_t_test+cluster_correction/'
-p_thresh = 0.05
+p_thresh = 0.05/6 # cluster threshold Bonf-corr
+colorbar = False # or True
 
 # load sign clu
 # ISC contrast speech
@@ -32,32 +33,62 @@ gamma1 = (results_dir + 't_clu_tail1_25-45Hz_613_1.npy',
           results_dir + 't_clu_tail-1_25-45Hz_613_1.npy')
 gamma2 = (results_dir + 't_clu_tail1_55-90Hz_613_1.npy',
           results_dir + 't_clu_tail-1_55-90Hz_613_1.npy')
-all_bands = {delta, theta, alpha, beta, gamma1, gamma2}
-
+all_bands = {delta, alpha, beta, gamma1, gamma2}
+# no significant clusters for theta
 t_threshold = -1.9651120203087005 # computed in ttest_cluster_permutation.py
 
 for band in all_bands:
     stc_all_cluster_vis_pos = None
     stc_all_cluster_vis_neg = None
     stc_all_cluster_vis_both = None
+    # positive clusters
     clu = np.load(band[0])
     T_obs, clusters, cluster_p_values, H0 = clu
     good_cluster_inds = np.where(cluster_p_values < p_thresh)[0]
     if not good_cluster_inds.any():
         print('No significant clusters available for file ' + band[0] + '\n')
     else:
-        stc_all_cluster_vis_pos = summarize_clusters_stc_AT(clu, p_thresh=0.05,
+        # find p-val of largest cluster  
+        out = []
+        for j in range(0, len(good_cluster_inds)):
+            inds_t, inds_v = [(clusters[cluster_ind]) for ii, cluster_ind in
+                              enumerate(good_cluster_inds)][j]
+            out.append(len(inds_v)) # max cluster is xxth
+    
+        id_max = out.index(max(out))
+        inds_t, inds_v = [(clusters[cluster_ind]) for ii, cluster_ind in
+                          enumerate(good_cluster_inds)][id_max]
+        print('positive clusters for ' + band[0])
+        print(len(inds_v))
+        print(cluster_p_values[cluster_p_values < p_thresh][id_max])
+        # summarize positive clusters
+        stc_all_cluster_vis_pos = summarize_clusters_stc_AT(clu, p_thresh=p_thresh,
                                                             tstep=1e-3, tmin=0,
                                                             subject='fsaverage',
                                                             vertices=None)
     clu = np.load(band[1])
     T_obs, clusters, cluster_p_values, H0 = clu
     good_cluster_inds = np.where(cluster_p_values < p_thresh)[0]
+    
     if not good_cluster_inds.any():
         print('No significant clusters available for file ' + band[1] + '\n')
         print('The smallest corrected p-value is '+str(min(cluster_p_values)))
     else:
-        stc_all_cluster_vis_neg = summarize_clusters_stc_AT(clu, p_thresh=0.05,
+        # find p-val of largest cluster  
+        out = []
+        for j in range(0, len(good_cluster_inds)):
+            inds_t, inds_v = [(clusters[cluster_ind]) for ii, cluster_ind in
+                              enumerate(good_cluster_inds)][j]
+            out.append(len(inds_v)) # max cluster is xxth
+    
+        id_max = out.index(max(out))
+        inds_t, inds_v = [(clusters[cluster_ind]) for ii, cluster_ind in
+                          enumerate(good_cluster_inds)][id_max]
+        print('negative clusters for ' + band[1])
+        print(len(inds_v))
+        print(cluster_p_values[cluster_p_values < p_thresh][id_max])
+        # summarize negative clusters
+        stc_all_cluster_vis_neg = summarize_clusters_stc_AT(clu, p_thresh=p_thresh,
                                                             tstep=1e-3, tmin=0,
                                                             subject='fsaverage',
                                                             vertices=None)
@@ -77,7 +108,7 @@ for band in all_bands:
         stc_all_cluster_vis_both.data[:, 0] = stc_all_cluster_vis_pos.data[:, 0]
     else:
         print('Error! There is no data for negative and positive contrasts.')
-
+        
     # thresholding
     stc_all_cluster_vis_both.data[(stc_all_cluster_vis_both.data[:, 0] <
                                    -t_threshold) & (stc_all_cluster_vis_both.data[:, 0] >
@@ -94,11 +125,11 @@ for band in all_bands:
                                               transparent=True,
                                               background='white',
                                               title=basename(band[0])[:-4]+
-                                              '-'+hemi, colorbar=True)
+                                              '-'+hemi, colorbar=colorbar)
         # fix for look-through visualization of the brain
         brain.data['surfaces'][0].actor.property.backface_culling = True
         brain.show_view('lateral')
-        brain.data['colorbar'].number_of_labels = 3
+#        brain.data['colorbar'].number_of_labels = 3
         brain.save_single_image(results_dir + 'clu_' + basename(band[0])[12:-4] +
                                 '_lat-' + hemi + '.png')
         brain.show_view('medial')
