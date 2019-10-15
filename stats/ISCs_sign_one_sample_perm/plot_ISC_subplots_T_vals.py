@@ -150,17 +150,14 @@ files_leg = ('/media/cbru/SMEDY/results/ISCs_comp_against_0/legend/T-stats-color
 #plot subplots
 plt.rcParams['font.family'] = "serif"
 fig = plt.figure(figsize=(17, 13))
-fig.tight_layout()
-fig.subplots_adjust(wspace=0.02, hspace=0.12)
-i = 0
 
 positions = {3, 7, 11, 15, 19, 23}
-legend = ('', '', '', '\u03B4 (0.5\u20134 Hz)',
-          '', '', '', '\u03B8 (4\u20138 Hz)',
-          '', '', '', '\u03B1 (8\u201312 Hz)',
-          '', '', '', '\u03B2 (12\u201325 Hz)',
-          '', '', '', 'low \u03B3 (25\u201345 Hz)',
-          '', '', '', 'high \u03B3 (55\u201390 Hz)'
+legend = ('', '', '', 'delta (0.5\u20134 Hz)',
+          '', '', '', 'theta (4\u20138 Hz)',
+          '', '', '', 'alpha (8\u201312 Hz)',
+          '', '', '', 'beta (12\u201325 Hz)',
+          '', '', '', 'low gamma (25\u201345 Hz)',
+          '', '', '', 'high gamma (55\u201390 Hz)'
           )
 
 # delta \u03B4
@@ -195,8 +192,19 @@ legend = ('', '', '', '\u03B4 (0.5\u20134 Hz)',
 #    plt.set_cmap('hot')
 #    i=i+1
 i = 0
+gs3 = plt.GridSpec(6, 1)
+gs3.update(left=0.74, right=0.84)
+for file in files_leg:
+    img = plt.imread(file, format='jpg')
+    ax = fig.add_subplot(gs3[i])
+    ax.imshow(img)#, aspect='equal')
+    ax.axis('off')
+    ax.set_aspect('equal')
+    i = i+1
+
+i = 0
 gs1 = plt.GridSpec(6, 4)
-gs1.update(left=0, right=0.435)
+gs1.update(left=0, right=0.38)
 for file in files_con:
     img = plt.imread(file, format='jpg')
     ax = fig.add_subplot(gs1[i])
@@ -206,7 +214,11 @@ for file in files_con:
         ax.text(1.3, 1.05, legend[i], horizontalalignment='center',
                 verticalalignment='center', transform=ax.transAxes, fontsize=17)
     if i == 2:
-        ax.text(0, 1.7, 'control group', horizontalalignment='center',
+        ax.text(0, 2, 'control group', horizontalalignment='center',
+                verticalalignment='center', transform=ax.transAxes, fontsize=22)
+        ax.text(-1, 1.6, 'lateral', horizontalalignment='center',
+                verticalalignment='center', transform=ax.transAxes, fontsize=22)
+        ax.text(1, 1.6, 'medial', horizontalalignment='center',
                 verticalalignment='center', transform=ax.transAxes, fontsize=22)
     if i in {0, 2}:
         ax.text(0.5, 1.3, 'lh', horizontalalignment='center',
@@ -218,15 +230,19 @@ for file in files_con:
 
 ii = 0
 gs2 = plt.GridSpec(6, 4)
-gs2.update(left=0.465, right=0.9)
+gs2.update(left=0.4, right=0.78)
 for file in files_dys:
     img = plt.imread(file, format='jpg')
     ax2 = fig.add_subplot(gs2[ii])
     ax2.imshow(img, aspect='equal')
     ax2.axis('off')
     if ii == 2:
-        ax2.text(0, 1.7, 'dyslexic group', horizontalalignment='center',
+        ax2.text(0, 2, 'dyslexic group', horizontalalignment='center',
                  verticalalignment='center', transform=ax2.transAxes, fontsize=22)
+        ax2.text(-1, 1.6, 'lateral', horizontalalignment='center',
+                verticalalignment='center', transform=ax2.transAxes, fontsize=22)
+        ax2.text(1, 1.6, 'medial', horizontalalignment='center',
+                verticalalignment='center', transform=ax2.transAxes, fontsize=22)
     if ii in {0, 2}:
         ax2.text(0.5, 1.3, 'lh', horizontalalignment='center',
                  verticalalignment='center', transform=ax2.transAxes, fontsize=15)
@@ -235,17 +251,9 @@ for file in files_dys:
                  verticalalignment='center', transform=ax2.transAxes, fontsize=15)
     ii = ii+1
 
-i = 0
-gs3 = plt.GridSpec(6, 1)
-gs3.update(left=0.9, right=1)
-for file in files_leg:
-    img = plt.imread(file, format='jpg')
-    ax = fig.add_subplot(gs3[i])
-    ax.imshow(img, aspect='equal')
-    ax.axis('off')
-    i = i+1
-
-fig.suptitle("T-statistics of ISCs during speech", fontsize=25, x=0.5, y=1.02)
+#fig.tight_layout()
+fig.subplots_adjust(wspace=0, hspace=0.12)
+fig.suptitle("T-statistics of ISCs during speech", fontsize=25, x=0.4, y=1.06)
 plt.show()
-fig.savefig(filepath + 'test_summary_T_' + con + '_ISCs.pdf', dpi=600, bbox_inches='tight')
-fig.savefig(filepath + 'test_summary_T_' + con + '_ISCs.png', dpi=600, bbox_inches='tight')
+fig.savefig(filepath + 'summary_T_' + con + '_ISCs2.pdf', dpi=600, bbox_inches='tight')
+fig.savefig(filepath + 'summary_T_' + con + '_ISCs2.png', dpi=600, bbox_inches='tight')
