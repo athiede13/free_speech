@@ -104,8 +104,8 @@ isc(:,blacklist)=[];
 imagesc(isc)
 colorbar
 hold on
-plot([0 size(isc,1)]+.5,[cutM cutM]+.5,'k');
-plot([cutM cutM]+.5,[0 size(isc,1)]+.5,'k');
+plot([0 size(isc,1)]+.5,[cutM cutM]+.5,'k', 'linewidth', 2);
+plot([cutM cutM]+.5,[0 size(isc,1)]+.5,'k', 'linewidth', 2);
 colormap(map)
 h = colorbar;
 ylabel(h, 'z-score', 'fontsize', 11)
@@ -123,8 +123,8 @@ isc(:,blacklist)=[];
 imagesc(isc)
 colorbar
 hold on
-plot([0 size(isc,1)]+.5,[cutM cutM]+.5,'k');
-plot([cutM cutM]+.5,[0 size(isc,1)]+.5,'k');
+plot([0 size(isc,1)]+.5,[cutM cutM]+.5,'k', 'linewidth', 2);
+plot([cutM cutM]+.5,[0 size(isc,1)]+.5,'k', 'linewidth', 2);
 colormap(map)
 h = colorbar;
 ylabel(h, 'z-score', 'fontsize', 11)
@@ -142,8 +142,8 @@ isc(:,blacklist)=[];
 imagesc(isc)
 colorbar
 hold on
-plot([0 size(isc,1)]+.5,[cutM cutM]+.5,'k');
-plot([cutM cutM]+.5,[0 size(isc,1)]+.5,'k');
+plot([0 size(isc,1)]+.5,[cutM cutM]+.5,'k', 'linewidth', 2);
+plot([cutM cutM]+.5,[0 size(isc,1)]+.5,'k', 'linewidth', 2);
 colormap(map)
 h = colorbar;
 ylabel(h, 'standardized score (WMS-III)', 'fontsize', 11)
@@ -161,8 +161,8 @@ isc(:,blacklist)=[];
 imagesc(isc)
 colorbar
 hold on
-plot([0 size(isc,1)]+.5,[cutM cutM]+.5,'k');
-plot([cutM cutM]+.5,[0 size(isc,1)]+.5,'k');
+plot([0 size(isc,1)]+.5,[cutM cutM]+.5,'k', 'linewidth', 2);
+plot([cutM cutM]+.5,[0 size(isc,1)]+.5,'k', 'linewidth', 2);
 colormap(map)
 h = colorbar;
 ylabel(h, 'standardized score (WAIS-III)', 'fontsize', 11)
