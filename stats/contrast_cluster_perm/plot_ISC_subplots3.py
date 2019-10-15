@@ -18,10 +18,10 @@ files = (filepath + 'clu_5.000000e-01-4Hz_613_1_lat-lh.png',
          filepath + 'clu_5.000000e-01-4Hz_613_1_lat-rh.png',
          filepath + 'clu_5.000000e-01-4Hz_613_1_med-lh.png',
          filepath + 'clu_5.000000e-01-4Hz_613_1_med-rh.png',
-         filepath + 'clu_4-8Hz_613_1_lat-lh.png',
-         filepath + 'clu_4-8Hz_613_1_lat-rh.png',
-         filepath + 'clu_4-8Hz_613_1_med-lh.png',
-         filepath + 'clu_4-8Hz_613_1_med-rh.png',
+#         filepath + 'clu_4-8Hz_613_1_lat-lh.png', # no significant clusters for theta with Bonf-corr
+#         filepath + 'clu_4-8Hz_613_1_lat-rh.png',
+#         filepath + 'clu_4-8Hz_613_1_med-lh.png',
+#         filepath + 'clu_4-8Hz_613_1_med-rh.png',
          filepath + 'clu_8-12Hz_613_1_lat-lh.png',
          filepath + 'clu_8-12Hz_613_1_lat-rh.png',
          filepath + 'clu_8-12Hz_613_1_med-lh.png',
@@ -55,12 +55,12 @@ fig.subplots_adjust(wspace=0, hspace=0)
 i = 1
 
 positions = {3, 7, 11, 15, 19, 23}
-legend = ('', '', '', '\u03B4 (0.5\u20134 Hz)',
-          '', '', '', '\u03B8 (4\u20138 Hz)',
-          '', '', '', '\u03B1 (8\u201312 Hz)',
-          '', '', '', '\u03B2 (12\u201325 Hz)',
-          '', '', '', 'low \u03B3 (25\u201345 Hz)',
-          '', '', '', 'high \u03B3 (55\u201390 Hz)'
+legend = ('', '', '', 'delta',
+#          '', '', '', 'theta',
+          '', '', '', 'alpha',
+          '', '', '', 'beta',
+          '', '', '', 'low gamma',
+          '', '', '', 'high gamma'
           )
 
 # delta \u03B4
@@ -93,5 +93,5 @@ for file in files:
 
 fig.suptitle("ISC group contrasts", fontsize=25, x=0.5, y=1)
 plt.show()
-fig.savefig(filepath + 'summary_t_contrast_' + con + '_ISCs.pdf', dpi=600, bbox_inches='tight')
-fig.savefig(filepath + 'summary_t_contrast_' + con + '_ISCs.png', dpi=600, bbox_inches='tight')
+fig.savefig(filepath + 'summary_t_contrast_' + con + '_ISCs2.pdf', dpi=600, bbox_inches='tight')
+fig.savefig(filepath + 'summary_t_contrast_' + con + '_ISCs2.png', dpi=600, bbox_inches='tight')

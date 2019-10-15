@@ -36,10 +36,12 @@ data_path = '/media/cbru/SMEDY/DATA/MEG_speech_rest_prepro/'
 src_fname = SUBJECTS_DIR + '/fsaverage/bem/fsaverage-ico-5-src.fif'
 src = mne.read_source_spaces(src_fname)
 
-fres = {'5.000000e-01-4Hz', '4-8Hz', '8-12Hz', '12-25Hz', '25-45Hz', '55-90Hz'}
+#fres = {'5.000000e-01-4Hz', '4-8Hz', '8-12Hz', '12-25Hz', '25-45Hz', '55-90Hz'}
+fres = {'4-8Hz'}#, '8-12Hz', '12-25Hz', '25-45Hz', '55-90Hz'}
 conditions = {'_1'} # 1 speech
 win = '_613'
-tails = [1, -1]
+tails = [1]#, -1]
+n_permutations = 5000
 
 log_path = (data_path+'logs/plot_stats_cluster_spatio_temporal_2samp_'+
             now.strftime("%Y-%m-%d") + win + '.log')
@@ -83,8 +85,8 @@ for fre in fres:
             stat_fun = ttest_ind_no_p # modified scipy function to not return pval
             T_obs, clusters, cluster_p_values, H0 = clu =\
                 spatio_temporal_cluster_test(X, connectivity=connectivity,
-                                             n_jobs=4, threshold=t_threshold,
-                                             n_permutations=5000, t_power=0,
+                                             n_jobs=1, threshold=t_threshold,
+                                             n_permutations=n_permutations, t_power=0,
                                              out_type='indices',
                                              stat_fun=stat_fun, tail=tail,
                                              seed=None, max_step=1,
@@ -96,6 +98,17 @@ for fre in fres:
 
             # see whether there are significant clusters
             p_thresh = 0.05
-            good_cluster_inds = np.where(cluster_p_values < p_thresh)[0]
-
+            good_cluster_inds = np.where(cluster_p_values < p_thresh)[0]        
+            if good_cluster_inds.any():
+                out = []
+                for j in range(0, len(good_cluster_inds)):
+                    inds_t, inds_v = [(clusters[cluster_ind]) for ii, cluster_ind in
+                                      enumerate(good_cluster_inds)][j]
+                    out.append(len(inds_v)) # max cluster is xxth
+            
+                id_max = out.index(max(out))
+                inds_t, inds_v = [(clusters[cluster_ind]) for ii, cluster_ind in
+                                  enumerate(good_cluster_inds)][id_max]
+                print(len(inds_v))
+                print(cluster_p_values[cluster_p_values < p_thresh][id_max])
 log.close()
