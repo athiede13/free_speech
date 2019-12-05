@@ -8,7 +8,7 @@ Files in this folder:
 1. combine_corr_matrices_speech1_2.m - Make weighted average of speech correlation matrices for part 1 and 2.
 1. make_colorbar.m - Create colorbar for visualization of results.
 1. extract_MNI_coord.py - Extract maximum-value MNI coordinates of largest cluster from statistical maps (see subfolders).
-1. MNI_to_brain_area.R - Extract brain areas from MNI cooredinates according to AAL atlas.
+1. MNI_to_brain_area.R - Extract brain areas from MNI coordinates according to AAL atlas.
 
 ## ISCs_sign_one_sample_perm - One-sample *t*-test for ISC significance in each group
 
