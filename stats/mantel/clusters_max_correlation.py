@@ -120,16 +120,20 @@ for i in range(0, len(isc_files)):
             inds_t, inds_v = [(clusters[cluster_ind]) for ii, cluster_ind in
                               enumerate(good_cluster_inds)][id_max]
             cluster_r = r_obs[inds_t, inds_v].mean()
+            cluster_r_z = np.arctanh(cluster_r)
             print(len(inds_v), 'id ', id_max)
             print('r=', cluster_r)   
+            print('r=', cluster_r_z)
     
             # isc values at the significant vertices of selected cluster
             sign_isc = orig_isc[inds_v, :]
             mean_isc = sign_isc.mean(axis=0)
+            # apply Fisher z-transformation
+            mean_isc_z = np.arctanh(mean_isc)
         
             # mean isc and behav separately for groups for plotting
-            mean_isc_dys = mean_isc[idDys-1] # ISCs dyslexics
-            mean_isc_con = mean_isc[idCon-1] # ISCs controls
+            mean_isc_dys = mean_isc_z[idDys-1] # ISCs dyslexics
+            mean_isc_con = mean_isc_z[idCon-1] # ISCs controls
             mean_behav_dys = mean_behav[idDys-1]
             mean_behav_con = mean_behav[idCon-1]
         
@@ -184,17 +188,17 @@ for i in range(0, len(isc_files)):
             elif nepsys[i] == 'mem':
                 plt.xlabel(nepsys[i] + ' (std score)')
             plt.ylim(-0.1, 0.35)
-            plt.ylabel('ISC (r)')
+            plt.ylabel('ISC (z)')
             plt.box(False)
             plt.grid(False)
-            plt.title('n=' + str(len(inds_v)) + ', r=' + str(cluster_r.round(2)),
+            plt.title('n=' + str(len(inds_v)) + ', z=' + str(cluster_r_z.round(2)),
                       y=1.1)
             plt.tight_layout(rect=[0, 0, 1, 1])
             plt.show()
-#            if cluster == 0:
-#                fig.savefig(results_path + '/max_cluster_corr_' + fres[i] + 
-#                            nepsys[i] + condition + '.png', dpi=600)
-#            else:
-#                fig.savefig(results_path + '/max_' + str(cluster) + 
-#                            'cluster_corr_' + fres[i] + nepsys[i] + 
-#                            condition + '.png', dpi=600)
+            if cluster == 0:
+                fig.savefig(results_path + '/z_max_cluster_corr_' + fres[i] + 
+                            nepsys[i] + condition + '.png', dpi=600)
+            else:
+                fig.savefig(results_path + '/z_max_' + str(cluster) + 
+                            'cluster_corr_' + fres[i] + nepsys[i] + 
+                            condition + '.png', dpi=600)
