@@ -12,12 +12,15 @@ rsync/
 source/doc/
 stats/eff_sizes+conf_interv/
 stats/flipped/
+stats/mantel/__pycache__/
 
 # specific files to ignore
 preproc/plot_prepro_MEG.py
 
 # ignore files with these endings
 *.pyc
+*.cpython
 *.txt
 *.npy
 *.xlsx
+*.ods

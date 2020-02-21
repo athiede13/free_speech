@@ -48,9 +48,11 @@ for fre in fres:
         print(group, fre, clu_size, mni.astype(np.int64), round(max_T, 2))
 
 #%% for ISC group differences
-results_dir = '/media/cbru/SMEDY/results/dys_con_contrast/2019_05_t_test+cluster_correction/'
+results_dir = '/media/cbru/SMEDY/results/dys_con_contrast/2020_02_redo_subject_perm/'
 delta = (results_dir + 't_clu_tail1_5.000000e-01-4Hz_613_1.npy',
          results_dir + 't_clu_tail-1_5.000000e-01-4Hz_613_1.npy')
+theta = (results_dir + 't_clu_tail1_4-8Hz_613_1.npy',
+         results_dir + 't_clu_tail-1_4-8Hz_613_1.npy')
 alpha = (results_dir + 't_clu_tail1_8-12Hz_613_1.npy',
          results_dir + 't_clu_tail-1_8-12Hz_613_1.npy')
 beta = (results_dir + 't_clu_tail1_12-25Hz_613_1.npy',
@@ -59,7 +61,7 @@ gamma1 = (results_dir + 't_clu_tail1_25-45Hz_613_1.npy',
           results_dir + 't_clu_tail-1_25-45Hz_613_1.npy')
 gamma2 = (results_dir + 't_clu_tail1_55-90Hz_613_1.npy',
           results_dir + 't_clu_tail-1_55-90Hz_613_1.npy')
-all_bands = {delta, alpha, beta, gamma1, gamma2}
+all_bands = {delta, theta, alpha, beta, gamma1, gamma2}
 #all_bands = {gamma1}
 p_cluster_threshold = 0.05/6
 

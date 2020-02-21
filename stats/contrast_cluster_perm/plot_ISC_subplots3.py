@@ -12,20 +12,20 @@ import matplotlib.pyplot as plt
 
 #to fill
 
-filepath = '/media/cbru/SMEDY/results/dys_con_contrast/2019_05_t_test+cluster_correction/'
+filepath = '/media/cbru/SMEDY/results/dys_con_contrast/2020_02_redo_subject_perm/'
 con = 'speech'
 files = (filepath + 'clu_5.000000e-01-4Hz_613_1_lat-lh.png',
          filepath + 'clu_5.000000e-01-4Hz_613_1_lat-rh.png',
          filepath + 'clu_5.000000e-01-4Hz_613_1_med-lh.png',
          filepath + 'clu_5.000000e-01-4Hz_613_1_med-rh.png',
-#         filepath + 'clu_4-8Hz_613_1_lat-lh.png', # no significant clusters for theta with Bonf-corr
-#         filepath + 'clu_4-8Hz_613_1_lat-rh.png',
-#         filepath + 'clu_4-8Hz_613_1_med-lh.png',
-#         filepath + 'clu_4-8Hz_613_1_med-rh.png',
-         filepath + 'clu_8-12Hz_613_1_lat-lh.png',
-         filepath + 'clu_8-12Hz_613_1_lat-rh.png',
-         filepath + 'clu_8-12Hz_613_1_med-lh.png',
-         filepath + 'clu_8-12Hz_613_1_med-rh.png',
+         filepath + 'clu_4-8Hz_613_1_lat-lh.png', # no significant clusters for theta with Bonf-corr
+         filepath + 'clu_4-8Hz_613_1_lat-rh.png',
+         filepath + 'clu_4-8Hz_613_1_med-lh.png',
+         filepath + 'clu_4-8Hz_613_1_med-rh.png',
+#         filepath + 'clu_8-12Hz_613_1_lat-lh.png', # no significant clusters for alpha with maximal cluster correction
+#         filepath + 'clu_8-12Hz_613_1_lat-rh.png',
+#         filepath + 'clu_8-12Hz_613_1_med-lh.png',
+#         filepath + 'clu_8-12Hz_613_1_med-rh.png',
          filepath + 'clu_12-25Hz_613_1_lat-lh.png',
          filepath + 'clu_12-25Hz_613_1_lat-rh.png',
          filepath + 'clu_12-25Hz_613_1_med-lh.png',
@@ -56,8 +56,8 @@ i = 1
 
 positions = {3, 7, 11, 15, 19, 23}
 legend = ('', '', '', 'delta',
-#          '', '', '', 'theta',
-          '', '', '', 'alpha',
+          '', '', '', 'theta',
+#          '', '', '', 'alpha',
           '', '', '', 'beta',
           '', '', '', 'low gamma',
           '', '', '', 'high gamma'
@@ -93,5 +93,5 @@ for file in files:
 
 fig.suptitle("ISC group contrasts", fontsize=25, x=0.5, y=1)
 plt.show()
-fig.savefig(filepath + 'summary_t_contrast_' + con + '_ISCs2.pdf', dpi=600, bbox_inches='tight')
-fig.savefig(filepath + 'summary_t_contrast_' + con + '_ISCs2.png', dpi=600, bbox_inches='tight')
+fig.savefig(filepath + 'summary_t_contrast_' + con + '_ISCs3.pdf', dpi=600, bbox_inches='tight')
+fig.savefig(filepath + 'summary_t_contrast_' + con + '_ISCs3.png', dpi=600, bbox_inches='tight')

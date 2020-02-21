@@ -1,140 +1,115 @@
 """
-Visualize cluster results.
+Threshold and visualize cluster results and export MNI coordinates.
 
 Created on Wed Feb 27 15:09:19 2019
 @author: Anja Thiede <anja.thiede@helsinki.fi>
 """
+
 from os.path import basename
-import sys
-sys.path.append('../')
 import numpy as np
-from mantel.summarize_clusters_stc_AT import summarize_clusters_stc_AT
+import mne
+from summarize_clusters_stc_AT import summarize_clusters_stc_AT
+import csv
 
 #%matplotlib qt
 
 subjects_dir = '/media/cbru/SMEDY/DATA/MRI_data/MRI_orig/'
 
 # to fill, needed if this script is not used directly after cluster_correction.py
-results_dir = '/media/cbru/SMEDY/results/dys_con_contrast/2019_05_t_test+cluster_correction/'
-p_thresh = 0.05/6 # cluster threshold Bonf-corr
-colorbar = False # or True
+results_dir = '/media/cbru/SMEDY/results/dys_con_contrast/2020_02_redo_subject_perm/'
+colorbar = False
 
 # load sign clu
-# ISC contrast speech
-delta = (results_dir + 't_clu_tail1_5.000000e-01-4Hz_613_1.npy',
-         results_dir + 't_clu_tail-1_5.000000e-01-4Hz_613_1.npy')
-theta = (results_dir + 't_clu_tail1_4-8Hz_613_1.npy',
-         results_dir + 't_clu_tail-1_4-8Hz_613_1.npy')
-alpha = (results_dir + 't_clu_tail1_8-12Hz_613_1.npy',
-         results_dir + 't_clu_tail-1_8-12Hz_613_1.npy')
-beta = (results_dir + 't_clu_tail1_12-25Hz_613_1.npy',
-        results_dir + 't_clu_tail-1_12-25Hz_613_1.npy')
-gamma1 = (results_dir + 't_clu_tail1_25-45Hz_613_1.npy',
-          results_dir + 't_clu_tail-1_25-45Hz_613_1.npy')
-gamma2 = (results_dir + 't_clu_tail1_55-90Hz_613_1.npy',
-          results_dir + 't_clu_tail-1_55-90Hz_613_1.npy')
-all_bands = {delta, alpha, beta, gamma1, gamma2}
-# no significant clusters for theta
-t_threshold = -1.9651120203087005 # computed in ttest_cluster_permutation.py
+files = (results_dir + 'clu_5.000000e-01-4Hz_613_1.npy',
+         results_dir + 'clu_4-8Hz_613_1.npy',
+         results_dir + 'clu_8-12Hz_613_1.npy',
+         results_dir + 'clu_12-25Hz_613_1.npy',
+         results_dir + 'clu_25-45Hz_613_1.npy',
+         results_dir + 'clu_55-90Hz_613_1.npy'
+         )
 
-for band in all_bands:
-    stc_all_cluster_vis_pos = None
-    stc_all_cluster_vis_neg = None
-    stc_all_cluster_vis_both = None
-    # positive clusters
-    clu = np.load(band[0])
-    T_obs, clusters, cluster_p_values, H0 = clu
-    good_cluster_inds = np.where(cluster_p_values < p_thresh)[0]
-    if not good_cluster_inds.any():
-        print('No significant clusters available for file ' + band[0] + '\n')
-    else:
-        # find p-val of largest cluster  
-        out = []
-        for j in range(0, len(good_cluster_inds)):
-            inds_t, inds_v = [(clusters[cluster_ind]) for ii, cluster_ind in
-                              enumerate(good_cluster_inds)][j]
-            out.append(len(inds_v)) # max cluster is xxth
-    
-        id_max = out.index(max(out))
-        inds_t, inds_v = [(clusters[cluster_ind]) for ii, cluster_ind in
-                          enumerate(good_cluster_inds)][id_max]
-        print('positive clusters for ' + band[0])
-        print(len(inds_v))
-        print(cluster_p_values[cluster_p_values < p_thresh][id_max])
-        # summarize positive clusters
-        stc_all_cluster_vis_pos = summarize_clusters_stc_AT(clu, p_thresh=p_thresh,
-                                                            tstep=1e-3, tmin=0,
-                                                            subject='fsaverage',
-                                                            vertices=None)
-    clu = np.load(band[1])
-    T_obs, clusters, cluster_p_values, H0 = clu
-    good_cluster_inds = np.where(cluster_p_values < p_thresh)[0]
-    
-    if not good_cluster_inds.any():
-        print('No significant clusters available for file ' + band[1] + '\n')
-        print('The smallest corrected p-value is '+str(min(cluster_p_values)))
-    else:
-        # find p-val of largest cluster  
-        out = []
-        for j in range(0, len(good_cluster_inds)):
-            inds_t, inds_v = [(clusters[cluster_ind]) for ii, cluster_ind in
-                              enumerate(good_cluster_inds)][j]
-            out.append(len(inds_v)) # max cluster is xxth
-    
-        id_max = out.index(max(out))
-        inds_t, inds_v = [(clusters[cluster_ind]) for ii, cluster_ind in
-                          enumerate(good_cluster_inds)][id_max]
-        print('negative clusters for ' + band[1])
-        print(len(inds_v))
-        print(cluster_p_values[cluster_p_values < p_thresh][id_max])
-        # summarize negative clusters
-        stc_all_cluster_vis_neg = summarize_clusters_stc_AT(clu, p_thresh=p_thresh,
-                                                            tstep=1e-3, tmin=0,
-                                                            subject='fsaverage',
-                                                            vertices=None)
-    # combine positive and negative clusters to one source estimate file
-    if stc_all_cluster_vis_pos is not None and stc_all_cluster_vis_neg is not None:
-        print('both contrasts')
-        stc_all_cluster_vis_both = stc_all_cluster_vis_pos.copy()
-        stc_all_cluster_vis_both.data[:, 0] = (stc_all_cluster_vis_pos.data[:, 0] +
-                                               stc_all_cluster_vis_neg.data[:, 0])
-    elif stc_all_cluster_vis_pos is None and stc_all_cluster_vis_neg is not None:
-        print('only negative contrast')
-        stc_all_cluster_vis_both = stc_all_cluster_vis_neg.copy()
-        stc_all_cluster_vis_both.data[:, 0] = stc_all_cluster_vis_neg.data[:, 0]
-    elif stc_all_cluster_vis_neg is None and stc_all_cluster_vis_pos is not None:
-        print('only positive contrast')
-        stc_all_cluster_vis_both = stc_all_cluster_vis_pos.copy()
-        stc_all_cluster_vis_both.data[:, 0] = stc_all_cluster_vis_pos.data[:, 0]
-    else:
-        print('Error! There is no data for negative and positive contrasts.')
+print('Visualizing clusters.')
+cutoff = 107 # max cluster length of fake values across all frequencies
+
+with open(results_dir + 'mni_corrdinates_out.csv', mode='w') as file_out:
+    mni_out = csv.writer(file_out, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+    for file in files:
+        print(file)
+        clu = np.load(file)
+        t_obs, clusters = clu
+        # thresholding by cluster length
+        good_cluster_inds = []
+        clusters2 = []
+        for ii in range(0, len(clusters)):
+            if len(clusters[ii][1]) > (cutoff-1):
+                good_cluster_inds.append(ii)
+                clusters2.append(clusters[ii])
+            clu2 = t_obs, clusters2, np.zeros(len(clusters2)), _
+        if not clusters2:
+            print('All clusters are smaller than the minimal length.')
+        else:
+            # Investigating the significant effects / Find max cluster
+            out = []
+            for j in range(0, len(good_cluster_inds)):
+                inds_t, inds_v = [(clusters[cluster_ind]) for ii, cluster_ind in
+                                  enumerate(good_cluster_inds)][j]
+                out.append(len(inds_v)) # max cluster is xxth
         
-    # thresholding
-    stc_all_cluster_vis_both.data[(stc_all_cluster_vis_both.data[:, 0] <
-                                   -t_threshold) & (stc_all_cluster_vis_both.data[:, 0] >
-                                                    t_threshold), 0] = 0
-
-    print('Visualizing clusters.')
-
-    for hemi in {'lh', 'rh'}:
-        clim = dict(kind='value', pos_lims=[-6, 0, 6]) # T values
-        brain = stc_all_cluster_vis_both.plot(subjects_dir=subjects_dir,
-                                              views='lat', clim=clim,
-                                              colormap='mne', hemi=hemi,
-                                              alpha=0.8, time_label=None,
-                                              transparent=True,
-                                              background='white',
-                                              title=basename(band[0])[:-4]+
-                                              '-'+hemi, colorbar=colorbar)
-        # fix for look-through visualization of the brain
-        brain.data['surfaces'][0].actor.property.backface_culling = True
-        brain.show_view('lateral')
-#        brain.data['colorbar'].number_of_labels = 3
-        brain.save_single_image(results_dir + 'clu_' + basename(band[0])[12:-4] +
-                                '_lat-' + hemi + '.png')
-        brain.show_view('medial')
-        brain.save_single_image(results_dir + 'clu_' + basename(band[0])[12:-4] +
-                                '_med-' + hemi + '.png')
-        brain.close()
-    print(stc_all_cluster_vis_both.data.min(), stc_all_cluster_vis_both.data.max())
-    del stc_all_cluster_vis_pos, stc_all_cluster_vis_neg, stc_all_cluster_vis_both
+            id_max = out.index(max(out))
+            inds_t, inds_v = [(clusters[cluster_ind]) for ii, cluster_ind in
+                              enumerate(good_cluster_inds)][id_max]
+            print(len(inds_v))
+            #summarize clusters
+            stc_all_cluster_vis = summarize_clusters_stc_AT(clu2, p_thresh=0.05,
+                                                            tstep=1e-3, tmin=0,
+                                                            subject='fsaverage',
+                                                            vertices=None)
+            
+            # checkup for cluster lengths
+            # find the cluster with most non-zero values
+            count = []
+            for c in range(0, stc_all_cluster_vis.data.shape[1]):
+                nz = np.nonzero(stc_all_cluster_vis.data[:, c])
+                count.append(len(nz[0]))
+            max_le_id = count.index(max(count[1:]))
+            clu_size = count[max_le_id]
+            # find extreme T value (highest or lowest)
+            if np.abs(stc_all_cluster_vis.data[:, max_le_id]).max() == stc_all_cluster_vis.data[:, max_le_id].max():
+                T = stc_all_cluster_vis.data[:, max_le_id].max()
+            else:
+                T = stc_all_cluster_vis.data[:, max_le_id].min()
+            # find the vertex that has extreme T value
+            ex_vtx = np.where(stc_all_cluster_vis.data[:, max_le_id] ==
+                               (stc_all_cluster_vis.data[:, max_le_id].max() 
+                               or stc_all_cluster_vis.data[:, max_le_id].min()))
+            if ex_vtx[0][0] > 10242:
+                hemi = 1 # rh
+                vtx = ex_vtx[0][0] - 10242
+            else:
+                hemi = 0 # lh
+                vtx = ex_vtx[0][0]
+            # transform to mni coordinates
+            mni = mne.vertex_to_mni(vtx, hemi, 'fsaverage')[0]
+            print(file, clu_size, mni.astype(np.int64), round(T, 2))
+            mni_out.writerow([file, clu_size, mni.astype(np.str), round(T, 2)])
+        
+            # visualization
+            for hemi in {'lh', 'rh'}:
+                clim = dict(kind='value', pos_lims=[-6, 0, 6])
+                brain = stc_all_cluster_vis.plot(subjects_dir=subjects_dir,
+                                                 views='lat', clim=clim,
+                                                 colorbar=colorbar, colormap='mne',
+                                                 hemi=hemi,
+                                                 alpha=0.8, time_label=None,
+                                                 transparent=True,
+                                                 background='white',
+                                                 title=basename(file)[:-4]+'-'+hemi)
+                # fix for look-through visualization of the brain
+                brain.data['surfaces'][0].actor.property.backface_culling = True
+                brain.show_view('lateral')
+    #                brain.data['colorbar'].number_of_labels = 3
+    #                brain.save_single_image(results_dir + 'colorbar.png')
+                brain.save_single_image(results_dir + basename(file)[:-4]+'_lat-'+ hemi + '.png')
+                brain.show_view('medial')
+                brain.save_single_image(results_dir + basename(file)[:-4]+'_med-'+ hemi + '.png')
+                brain.close()
