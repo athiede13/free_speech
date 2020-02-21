@@ -16,3 +16,5 @@ Files in this folder:
 1. morph_to_fsaverage.py - Morph envelopes to average subject. Step independent of Matlab ISC functions.
 1. isc_correlation_energy.m - Calculate pair-wise correlations (ISCs).
 1. isc_average_energy_alt.m - Calculate group averages.
+1. example_envelope.py - Show example envelopes of example pairs with high and low ISCs.
+1. sound_envelope.m - Show envelope of the speech stimulus.
