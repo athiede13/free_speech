@@ -76,6 +76,15 @@ while(throwthedice)
 end
 
 %% create fake isc data
+% for each node
+%   for each permutation i
+%       get shuffled indexes from the matrix fake_indices 
+%       shuffle the data 
+%       fake_isc_data = isc_data(fake_indexes(:,i),fake_indexes(:,i))
+%       now compute the 2 sample ttest and store the fake t value
+% 
+% result is a matrix num_of_nodes X num_of_permutations
+% which is the input for the cluster correction function from MNE
 
 % prepare iscMASK
 iscMASK(iscMASK~=0) = 1:(NS-1)*(NS)/2;
@@ -119,47 +128,7 @@ for f=1:length(freq) % MEG frequency band
         end
     end
     save([results_path, 'fake_t_vals_' freq{f} window cons{s} '.mat'],'fake_t_vals')
-    disp('fake_t_vals saved')
-%     - for each node
-%            - for each permutation i
-%                 get shuffled indexes from the matrix fake_indexes 
-%                 shuffle the data 
-%                 fake_isc_data = isc_data(fake_indexes(:,i),fake_indexes(:,i))
-%                 now compute the 2 sample ttest and store this fake t value somewhere
-% 
-%         you end up with a matrix num_of_nodes X num_of_permutations and then you can feed this 
-%             into the cluster correction function from MNE.
-    
-    
-
-    
-% %     % computing actual mantel test
-% %     r_mantel = corr(iscs_vec,model_vec,'type','spearman');
-% %     save([results_path, mode, '_r_mantel_', freq{f} window cons{s}, '.mat'],'r_mantel')
-
-%     
-%     % option 4: cluster correction
-%     %   for each permutation:
-%     %   1. Compute the test statistic for each voxel individually.
-%     %   2. Threshold the test statistic values.
-%     %   3. Cluster voxels that exceed this threshold (with the same sign) based on adjacency.
-%     %   4. Retain the size of the largest cluster (measured, e.g., by a simple voxel count, or by the sum of voxel t-values within the cluster) to build the null distribution.
-%     
-%     % get the uncorrected r-threshold
-%     rthreshold_uncorrected{f,s}=min(abs(r_mantel(find(pval_local<0.05))))
-%     if ~isempty(rthreshold_uncorrected{f,s})
-%         save([results_path, mode, '_rthreshold_uncorrected_' freq{f} window cons{s} '.mat'],'rthreshold_uncorrected')
-%         % 1. Compute the test statistic for each voxel individually.
-%         % for each node, compute its own p-value from the NPERMS fake models
-%         surrogate_values_thres=zeros(NPERMS,1);
-%         
-%         surrogate_values=corr(iscs_vec,fake_model_vec,'type','spearman');
-%         save([results_path, mode, '_surrogate_values_' freq{f} window cons{s} '.mat'],'surrogate_values')
-%     end
-%     
-%     % go through matrix and find clusters for each permutation done
-%     % in MNE python
-    
+    disp('fake_t_vals saved')    
 end
 
 %% compute real independent samples T-tests and save uncorrected thresholds
@@ -187,7 +156,7 @@ for f=1:length(freq) % MEG frequency band
     save([results_path, 'real_t_vals_', freq{f} window cons{s}, '.mat'],'real_t_vals')
     
     % get the uncorrected T-threshold
-    tthreshold_uncorrected=min(abs(real_t_vals(find(real_p_vals<0.05/6)))) % Bonferroni correction, 6 frequency bands
+    tthreshold_uncorrected=min(abs(real_t_vals(find(real_p_vals<0.05))))
     if ~isempty(tthreshold_uncorrected)
         save([results_path, 'tthreshold_uncorrected_' freq{f} window cons{s} '.mat'],'tthreshold_uncorrected')
     end
