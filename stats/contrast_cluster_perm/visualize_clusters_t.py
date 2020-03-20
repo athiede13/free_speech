@@ -95,7 +95,7 @@ with open(results_dir + 'mni_corrdinates_out.csv', mode='w') as file_out:
         
             # visualization
             for hemi in {'lh', 'rh'}:
-                clim = dict(kind='value', pos_lims=[-6, 0, 6])
+                clim = dict(kind='value', pos_lims=[-6, 0, 6]) # legend T-values -6 to 6
                 brain = stc_all_cluster_vis.plot(subjects_dir=subjects_dir,
                                                  views='lat', clim=clim,
                                                  colorbar=colorbar, colormap='mne',

@@ -9,11 +9,8 @@ Created on Fri Feb 22 13:21:40 2019
 
 import numpy as np
 from scipy import stats
-#from scipy import sparse
 from scipy.io import loadmat
 import matplotlib.pyplot as plt
-#import mne
-#from mne import spatial_src_connectivity
 import os
 
 from permutation_cluster_test_AT import _permutation_cluster_test_AT
@@ -23,22 +20,15 @@ print(__doc__)
 #%% file paths
 
 conn = '/media/cbru/SMEDY/scripts_speech_rest/stats/mantel/connectivity.npy'
-#SUBJECTS_DIR = '/media/cbru/SMEDY/DATA/MRI_data/MRI_orig/'
 results_dir = '/media/cbru/SMEDY/results/dys_con_contrast/2020_02_redo_subject_perm/'
 read_dir = '/media/cbru/SMEDY/DATA/group_fake_iscs/'
 
 #%% read connectivity
 
-#src_fname = SUBJECTS_DIR + '/fsaverage/bem/fsaverage-ico-5-src.fif'
-#src = mne.read_source_spaces(src_fname)
 print('Read connectivity.')
 connectivity = np.load(conn)
 
 connectivity_sparse = connectivity[()]
-
-#connectivity = connectivity_sparse.toarray()
-
-#np.save(save_dir + 'connectivity', connectivity_sparse)
 
 #%% cluster correction
 
@@ -73,7 +63,6 @@ for freq in freqs:
             threshold = loadmat(read_dir + 'tthreshold_uncorrected_' + freq +
                                 window + cons + '.mat')['tthreshold_uncorrected']
             print(threshold)
-            #thres_id = threshold.shape[0] - 1 # which frequency band id -1 to get correct index
         
             # reshape fake_values to (n_observations, n_times, n_vertices)
             fake_values = fake_values[:, :, np.newaxis]

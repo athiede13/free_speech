@@ -18,7 +18,7 @@ files = (filepath + 'clu_5.000000e-01-4Hz_613_1_lat-lh.png',
          filepath + 'clu_5.000000e-01-4Hz_613_1_lat-rh.png',
          filepath + 'clu_5.000000e-01-4Hz_613_1_med-lh.png',
          filepath + 'clu_5.000000e-01-4Hz_613_1_med-rh.png',
-         filepath + 'clu_4-8Hz_613_1_lat-lh.png', # no significant clusters for theta with Bonf-corr
+         filepath + 'clu_4-8Hz_613_1_lat-lh.png',
          filepath + 'clu_4-8Hz_613_1_lat-rh.png',
          filepath + 'clu_4-8Hz_613_1_med-lh.png',
          filepath + 'clu_4-8Hz_613_1_med-rh.png',
@@ -63,11 +63,6 @@ legend = ('', '', '', 'delta',
           '', '', '', 'high gamma'
           )
 
-# delta \u03B4
-# theta \u03B8
-# alpha \u03B1
-# beta \u03B2
-# gamma \u03B3
 for file in files:
     img = plt.imread(file, format='png')
     ax = fig.add_subplot(6, 4, i)
