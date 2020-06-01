@@ -1,8 +1,8 @@
 # free_speech
 
-Code used for **Thiede et al. Atypical brain-to-brain synchronization during listening to continuous natural speech in dyslexia, under review.** Most of the code makes use of the [MNE Python](https://github.com/mne-tools/mne-python) software package.
+Code used for **Thiede, A. et al. Atypical MEG inter-subject correlation during listening to continuous natural speech in dyslexia, Neuroimage. 216 (2020) 116799. https://doi.org/10.1016/j.neuroimage.2020.116799.** Most of the code makes use of the [MNE Python](https://github.com/mne-tools/mne-python) software package.
 
-DOI for the code: https://doi.org/10.5281/zenodo.3248697
+DOI for the code: [![DOI](https://zenodo.org/badge/176300570.svg)](https://zenodo.org/badge/latestdoi/176300570)
 
 ## Preprocessing
 
