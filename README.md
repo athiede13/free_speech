@@ -2,7 +2,7 @@
 
 Code used for **Thiede, A. et al. 2020. Atypical MEG inter-subject correlation during listening to continuous natural speech in dyslexia. Neuroimage 216, 116799. https://doi.org/10.1016/j.neuroimage.2020.116799** Most of the code makes use of the [MNE Python](https://github.com/mne-tools/mne-python) software package.
 
-DOI for the code: [
+DOI for the code: [10.5281/zenodo.3248697](https://zenodo.org/badge/latestdoi/176300570)
 
 ## Preprocessing
 
